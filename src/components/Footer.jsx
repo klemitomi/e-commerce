@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 const Footer = () => {
   const copyright = '©';
   const year = new Date().getFullYear();
