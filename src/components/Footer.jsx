@@ -3,7 +3,7 @@ import React from 'react'
 const Footer = () => {
   const copyright = '©';
   const year = new Date().getFullYear();
-  const companyName = 'by Thomas Klement';
+  const companyName = 'frontendbyklement.hu';
   const rightsReserved = 'All rights reserved.';
 
   return (
