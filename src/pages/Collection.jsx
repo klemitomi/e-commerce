@@ -12,6 +12,7 @@ const Collection = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
+  const [sortType, setSortType] = useState('relevant');
 
 const toggleCategory = (e) => {
   if (category.includes(e.target.value)) {
@@ -42,10 +43,34 @@ const applyFilter = () => {
   setFilteredProducts(productsCopy);
 };
 
-
+const sortProduct = (productsToSort) => {
+  let sortedProducts = productsToSort.slice();
+  switch (sortType) {
+    case 'low-high':
+      sortedProducts.sort((a, b) => a.price - b.price);
+      break;
+    case 'high-low':
+      sortedProducts.sort((a, b) => b.price - a.price);
+      break;
+    default:
+      // Do nothing for 'relevant'
+      break;
+  }
+  return sortedProducts;
+};
 useEffect(() => {
-  applyFilter();
-}, [category, subCategory]);
+  let productsCopy = products.slice();
+
+  if (category.length > 0) {
+    productsCopy = productsCopy.filter(item => category.includes(item.category));
+  }
+  if (subCategory.length > 0) {
+    productsCopy = productsCopy.filter(item => subCategory.includes(item.subCategory));
+  }
+
+  setFilteredProducts(sortProduct(productsCopy));
+  // eslint-disable-next-line
+}, [category, subCategory, sortType, products]);
 
   return (
     <div className='flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t'>
@@ -93,7 +118,7 @@ useEffect(() => {
           <Title text1={'ALL'} text2={'COLLECTIONS'}></Title>
 
           {/* Product Sort*/}
-           <select className='border-2 border-gray-300 text-sm px-2' name="" id="">
+           <select onChange={(e) => setSortType(e.target.value)} className='border-2 border-gray-300 text-sm px-2' name="" id="">
             <option value="relevant">Sort By: Relevant</option>
             <option value="low-high">Sort By: Low to High</option>
             <option value="high-low">Sort By: High to Low</option>
