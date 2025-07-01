@@ -3,6 +3,7 @@ import { useContext, useState } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import Title from '../components/Title';
 import ProductItem from '../components/ProductItem';
+import { assets } from '../assets/frontend_assets/assets';
 
 const Cart = () => {
 
@@ -61,11 +62,14 @@ const Cart = () => {
                 <p className="px-2 sm:px-3 sm:py-1 border bg-slate-50">{item.size}</p>
               </div>
               <div className='flex items-center gap-2 justify-end'>
-                <div className='flex items-center gap-1'>
-                  <button onClick={() => modifyCart(item._id, item.size, item.quantity + 1)} className='text-sm text-blue-500 border border-blue-500 rounded px-3 py-1 hover:bg-blue-500 hover:text-white'>+</button>
-                  <button onClick={() => modifyCart(item._id, item.size, item.quantity - 1)} className='text-sm text-blue-500 border border-blue-500 rounded px-3 py-1 hover:bg-blue-500 hover:text-white'>-</button>
-                </div>
-                <button onClick={() => removeFromCart(item._id, item.size)} className='text-sm text-red-500 border border-red-500 rounded px-3 py-1 hover:bg-red-500 hover:text-white'>Remove</button>
+                <input
+                  type="number"
+                  min={1}
+                  defaultValue={item.quantity}
+                  onChange={e => modifyCart(item._id, item.size, Number(e.target.value))}
+                  className="hover:cursor-pointer hover:bg-slate-100 max-w-10 sm:max-w-20 px-1 text-center border rounded"
+                />
+                <img onClick={() => removeFromCart(item._id, item.size)} className='cursor-pointer w-4 mr-4 sm:w-5 hover:scale-110 hover:bg-red-500 hover:py-1 hover:rounded' src={assets.bin_icon} alt="binicon" />
               </div>
             </div>
           )
