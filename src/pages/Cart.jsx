@@ -6,7 +6,7 @@ import ProductItem from '../components/ProductItem';
 
 const Cart = () => {
 
-  const { products, cartItems, currency } = useContext(ShopContext);
+  const { products, cartItems, currency, removeFromCart, modifyCart } = useContext(ShopContext);
 
   const [cartData, setCartData] = useState([]);
 
@@ -36,10 +36,19 @@ const Cart = () => {
         cartData.map((item, index) => {
           const product = products.find(product => product._id === item._id);
 
+          if (!product) {
+            return (
+              <div key={index} className="py-4 border-t border-b text-gray-700">
+                <p>Product not found.</p>
+                <button onClick={() => removeFromCart(item._id, item.size)} className='text-sm text-red-500 border border-red-500 rounded px-3 py-1 hover:bg-red-500 hover:text-white'>Remove</button>
+              </div>
+            );
+          }
+
           return (
             <div key={index} className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] gap-4 items-center">
               <div className="flex items-start gap-6">
-                <img src={product.image[0]} alt='productimage' className="w-16 sm:w-20" />
+                <img src={product.image && product.image.length > 0 ? product.image[0] : ''} alt='productimage' className="w-16 sm:w-20" />
                 <div className="flex flex-col">
                   <h2 className="text-xs font-medium sm:text-lg">{product.name}</h2>
                 </div>
@@ -50,6 +59,13 @@ const Cart = () => {
               <div className="flex items-center">
                 <p className="text-sm">Qty: {item.quantity}</p>
                 <p className="px-2 sm:px-3 sm:py-1 border bg-slate-50">{item.size}</p>
+              </div>
+              <div className='flex items-center gap-2 justify-end'>
+                <div className='flex items-center gap-1'>
+                  <button onClick={() => modifyCart(item._id, item.size, item.quantity + 1)} className='text-sm text-blue-500 border border-blue-500 rounded px-3 py-1 hover:bg-blue-500 hover:text-white'>+</button>
+                  <button onClick={() => modifyCart(item._id, item.size, item.quantity - 1)} className='text-sm text-blue-500 border border-blue-500 rounded px-3 py-1 hover:bg-blue-500 hover:text-white'>-</button>
+                </div>
+                <button onClick={() => removeFromCart(item._id, item.size)} className='text-sm text-red-500 border border-red-500 rounded px-3 py-1 hover:bg-red-500 hover:text-white'>Remove</button>
               </div>
             </div>
           )
