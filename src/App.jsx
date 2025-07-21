@@ -13,12 +13,15 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import SearchBar from './components/SearchBar'
 import ShopContext from './context/ShopContext'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const App = () => {
   return (
     <ShopContext>
       <div className="App px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16">
+        <ToastContainer />
         <Navbar />
         <SearchBar />
         <Routes>
